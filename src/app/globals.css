@@ -1,26 +1,213 @@
 @import "tailwindcss";
 
+/* Dark mode is driven by data-theme on <html> (set before paint in layout.tsx). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ------------------------------------------------------------------
+   Brand tokens — values from the AluEstimator product design tokens.
+   Light is the default; [data-theme="dark"] overrides.
+   ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gutter: 20px;
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-2: #eef2f8;
+  --ink: #0b1728;
+  --ink-soft: #2b3340;
+  --muted: #4a5a72;
+  --line: #d7dee8;
+  --line-strong: #b9c5d6;
+  --brand: #1e40af;
+  --accent: #316be0;
+  --accent-soft: #e4ebf7;
+  --navy: #0f1f3d;
+  --navy-top: #1a2e57;
+  --on-navy: #e8eef8;
+  --on-navy-muted: #b4c3de;
+  --steel: #8a9bb4;
+  --glass: rgba(120, 170, 230, 0.22);
+  --cut-1: #316be0;
+  --cut-2: #1e40af;
+  --cut-3: #5b8def;
+  --cut-4: #0f1f3d;
+  --waste: #d9822b;
+  --success: #15803d;
+  --grid: rgba(49, 107, 224, 0.08);
+  --grid-navy: rgba(126, 166, 255, 0.14);
+  --shadow: 0 1px 2px rgba(11, 23, 40, 0.06), 0 8px 24px -8px rgba(11, 23, 40, 0.12);
+  --shadow-lg: 0 2px 4px rgba(11, 23, 40, 0.05), 0 24px 48px -16px rgba(11, 23, 40, 0.22);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0a1220;
+  --surface: #0f1a2e;
+  --surface-2: #16233b;
+  --ink: #e6edf7;
+  --ink-soft: #c9d5e6;
+  --muted: #9fb0c8;
+  --line: #24334d;
+  --line-strong: #344869;
+  --brand: #3b82f6;
+  --accent: #7aa2ff;
+  --accent-soft: #1a2a47;
+  --navy: #0b1730;
+  --navy-top: #142a52;
+  --on-navy: #e8eef8;
+  --on-navy-muted: #a9bbd9;
+  --steel: #6b7f9e;
+  --glass: rgba(120, 170, 230, 0.16);
+  --cut-1: #5b8def;
+  --cut-2: #3b82f6;
+  --cut-3: #8fb2ff;
+  --cut-4: #c9d8f5;
+  --waste: #e89a4a;
+  --success: #4ade80;
+  --grid: rgba(122, 162, 255, 0.07);
+  --grid-navy: rgba(126, 166, 255, 0.12);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 24px 48px -16px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-brand: var(--brand);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-navy: var(--navy);
+  --color-navy-top: var(--navy-top);
+  --color-on-navy: var(--on-navy);
+  --color-on-navy-muted: var(--on-navy-muted);
+  --color-steel: var(--steel);
+  --color-waste: var(--waste);
+  --color-success: var(--success);
+  --color-whatsapp: #128c4a;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
+  --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
+
+  --shadow-card: var(--shadow);
+  --shadow-lift: var(--shadow-lg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+}
+
+@layer utilities {
+  /* Thin blueprint grid. */
+  .bg-blueprint {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .bg-blueprint-navy {
+    background-image:
+      linear-gradient(var(--grid-navy) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-navy) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .bg-navy-gradient { background: linear-gradient(180deg, var(--navy-top), var(--navy)); }
+  /* Brushed aluminium. */
+  .bg-brushed {
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg, #e9edf3, #c9d2de 55%, #dfe5ed);
+  }
+  .bg-hatch {
+    background-image: repeating-linear-gradient(
+      -45deg, var(--waste) 0 2px, transparent 2px 6px);
+    background-color: color-mix(in srgb, var(--waste) 14%, transparent);
+  }
+  .text-gradient-steel {
+    background: linear-gradient(180deg, var(--ink) 30%, color-mix(in srgb, var(--ink) 55%, var(--accent)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+  /* Page gutter: 20px phone → 32px tablet → 40px desktop; content capped at 1200px. */
+  .container-x {
+    width: 100%;
+    max-width: calc(1200px + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+  }
+  .container-narrow { max-width: calc(820px + 2 * var(--gutter)); }
+}
+
+/* Dimension-line label used across visuals. */
+.dim-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Radix accordion height animation */
+@keyframes acc-down { from { height: 0 } to { height: var(--radix-accordion-content-height) } }
+@keyframes acc-up { from { height: var(--radix-accordion-content-height) } to { height: 0 } }
+
+@media (min-width: 768px) { :root { --gutter: 32px; } }
+@media (min-width: 1280px) { :root { --gutter: 40px; } }
+
+/* Long-form prose (legal pages, MDX) */
+.prose-ae { color: var(--ink-soft); font-size: 16.5px; line-height: 1.75; }
+.prose-ae h2 { font-size: 24px; font-weight: 600; color: var(--ink); margin: 2.4em 0 .6em; }
+.prose-ae h3 { font-size: 19px; font-weight: 600; color: var(--ink); margin: 1.8em 0 .5em; }
+.prose-ae p, .prose-ae ul, .prose-ae ol { margin: 0 0 1.1em; }
+.prose-ae ul { list-style: disc; padding-left: 1.3em; }
+.prose-ae ol { list-style: decimal; padding-left: 1.3em; }
+.prose-ae li { margin: .35em 0; }
+.prose-ae a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+[data-theme="dark"] .prose-ae a { color: var(--accent); }
+.prose-ae strong { color: var(--ink); font-weight: 600; }
+.prose-ae > :first-child { margin-top: 0; }
