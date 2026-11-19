@@ -57,6 +57,14 @@ export function Footer() {
           <p>
             © <Year /> {site.legalName} · GSTIN {site.gstin}
           </p>
+          <a
+            href="https://www.hnmxtechnologies.com/"
+            className="inline-flex min-h-9 items-center gap-2.5 opacity-85 transition-opacity hover:opacity-100"
+          >
+            A product of
+            {/* eslint-disable-next-line @next/next/no-img-element -- external SVG wordmark served by the HNMX site */}
+            <img src="https://www.hnmxtechnologies.com/logo-inverse.svg" alt="HNMX Technologies" width={59} height={28} className="h-7 w-auto" />
+          </a>
           <ul className="flex flex-wrap gap-x-4 gap-y-1">
             {site.socials.map((s) => (
               <li key={s.href}>
