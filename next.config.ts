@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   // src/content/site.ts and with the HNMX rewrite.
   basePath: "/aluestimator",
 
+  // The HNMX site uses trailingSlash: true, and its vercel.json redirects
+  // /aluestimator to /aluestimator/. Next defaults to the opposite and 308s
+  // /aluestimator/ back to /aluestimator, which against that redirect is an
+  // infinite loop. Matching the convention also keeps canonicals pointing at
+  // the URL that actually returns 200.
+  trailingSlash: true,
+
   experimental: {
     serverActions: {
       // A Server Action compares the request Origin against the Host. Behind

@@ -55,7 +55,9 @@ export const site = {
  * domain root.
  */
 export const canonicalPath = (path: string) =>
-  path === "/" ? `${site.basePath}/` : `${site.basePath}${path}`;
+  path === "/" || path === ""
+    ? `${site.basePath}/`
+    : `${site.basePath}${path}/`;
 
 export type NavItem = { label: string; href: string };
 

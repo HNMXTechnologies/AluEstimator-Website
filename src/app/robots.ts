@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { canonicalPath, site } from "@/content/site";
+import { site } from "@/content/site";
 
 export default function robots(): MetadataRoute.Robots {
   // Crawlers only read /robots.txt at the domain root, which the HNMX site
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
   // engines actually use, so the sitemap is listed there too.
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: `${site.url}${canonicalPath("/sitemap.xml")}`,
+    sitemap: `${site.url}${site.basePath}/sitemap.xml`,
   };
 }
