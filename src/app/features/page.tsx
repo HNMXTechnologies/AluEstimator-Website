@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { canonicalPath } from "@/content/site";
 import type { ReactNode } from "react";
 import { Cloud, Laptop, Moon, Search, ShieldCheck, Smartphone, Lock } from "lucide-react";
 import { CheckList, EstimatorVisual, LedgerVisual, StockVisual, TeamVisual } from "@/components/features/ModuleVisuals";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   title: "Features — estimation, quotations, partitions, inventory & billing",
   description:
     "Every AluEstimator feature: window template builder, cutting plan, six GST quotation formats, partition configurator, coating & stock tracking, invoices, customer ledger and multi-branch workspaces.",
-  alternates: { canonical: "/features" },
+  alternates: { canonical: canonicalPath("/features") },
 };
 
 const visuals: Record<FeatureModule["id"], ReactNode> = {

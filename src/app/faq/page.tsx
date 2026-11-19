@@ -5,13 +5,13 @@ import { PageHero } from "@/components/shared/PageHero";
 import { FaqAccordion } from "@/components/ui/Accordion";
 import { ButtonLink, WhatsAppIcon } from "@/components/ui/Button";
 import { faqs } from "@/content/faq";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "FAQ — questions about AluEstimator",
   description:
     "Answers about installing AluEstimator, using your own window designs, units including dora, GST quotations, WhatsApp sharing, staff access, branches, Excel import and data safety.",
-  alternates: { canonical: "/faq" },
+  alternates: { canonical: canonicalPath("/faq") },
 };
 
 const groups = [

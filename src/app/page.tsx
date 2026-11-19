@@ -19,14 +19,14 @@ import { Section, SectionHeader } from "@/components/ui/Section";
 import { beforeAfter, builtForIndia, devices, pipeline } from "@/content/home";
 import { faqs } from "@/content/faq";
 import { plans, pricingNotes } from "@/content/pricing";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 import { formatINR } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: { absolute: "AluEstimator — Aluminium window estimation & quotation software for India" },
   description:
     "Aluminium window estimation software for fabricators in India. Cut lengths, optimised cutting plan, glass, coating and a branded GST quotation on WhatsApp — in minutes.",
-  alternates: { canonical: "/" },
+  alternates: { canonical: canonicalPath("/") },
 };
 
 const indiaIcons = {

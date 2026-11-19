@@ -3,13 +3,13 @@ import { BadgeCheck, CalendarCheck, Clock, FileSpreadsheet, Mail, MapPin, Phone 
 import { DemoForm } from "@/components/contact/DemoForm";
 import { PageHero } from "@/components/shared/PageHero";
 import { ButtonLink, WhatsAppIcon } from "@/components/ui/Button";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Book a free demo",
   description:
     "Book a free 30-minute AluEstimator demo, online or at your workshop. We set up your 14-day free trial and help import your designs and stock from Excel.",
-  alternates: { canonical: "/contact" },
+  alternates: { canonical: canonicalPath("/contact") },
 };
 
 const expect = [

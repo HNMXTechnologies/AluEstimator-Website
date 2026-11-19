@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
@@ -168,7 +169,7 @@ export function DemoForm() {
               {pending ? "Sending…" : "Book my free demo"}
             </button>
             <p className="text-xs text-muted">
-              We&apos;ll only use these details to arrange your demo. See our <a href="/legal/privacy" className="underline underline-offset-2">privacy policy</a>.
+              We&apos;ll only use these details to arrange your demo. See our <Link href="/legal/privacy" className="underline underline-offset-2">privacy policy</Link>.
             </p>
           </motion.form>
         )}

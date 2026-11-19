@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { canonicalPath } from "@/content/site";
 import { FileCheck2, Hash, Send, ArrowRightLeft } from "lucide-react";
 import { FormatCustomiser } from "@/components/formats/FormatCustomiser";
 import { FormatGallery } from "@/components/formats/FormatGallery";
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   title: "Quotation formats — six GST quotation designs for aluminium fabricators",
   description:
     "Six professional GST quotation designs with window drawings: Classic GST, Window Schedule, Per Sq. Ft., Room-wise Gallery, Elevation Sheet and Formal Letter.",
-  alternates: { canonical: "/quotation-formats" },
+  alternates: { canonical: canonicalPath("/quotation-formats") },
 };
 
 const lifecycle = ["Draft", "Sent", "Approved", "Converted to invoice"];

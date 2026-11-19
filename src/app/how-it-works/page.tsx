@@ -8,13 +8,13 @@ import { PageHero } from "@/components/shared/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { pipeline, steps } from "@/content/home";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "How it works — from site measurement to GST quotation",
   description:
     "Build your window designs once, enter site sizes, get the cutting plan, cost and price, then send a branded GST quotation on WhatsApp. See each step.",
-  alternates: { canonical: "/how-it-works" },
+  alternates: { canonical: canonicalPath("/how-it-works") },
 };
 
 const details: { points: string[]; screen: ReactNode }[] = [

@@ -9,14 +9,14 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import type { Faq } from "@/content/faq";
 import { plans, pricingNotes } from "@/content/pricing";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 import { formatINR } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Pricing — all features on every plan, from ₹799/month",
   description:
     "AluEstimator pricing: Basic ₹799, Pro ₹1,999 and Enterprise ₹4,999 per month (+18% GST). Every plan includes every feature. Yearly billing gets 2 months free.",
-  alternates: { canonical: "/pricing" },
+  alternates: { canonical: canonicalPath("/pricing") },
 };
 
 const notes = [

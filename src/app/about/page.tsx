@@ -6,13 +6,13 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { WindowElevation } from "@/components/visuals/WindowElevation";
 import { about, principles } from "@/content/about";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About — built in Ahmedabad for aluminium fabricators",
   description:
     "AluEstimator was started in Ahmedabad by a team that grew up around aluminium fabrication workshops, to put the whole job in one simple app.",
-  alternates: { canonical: "/about" },
+  alternates: { canonical: canonicalPath("/about") },
 };
 
 export default function AboutPage() {

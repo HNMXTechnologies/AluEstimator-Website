@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/content/site";
+import { canonicalPath, site } from "@/content/site";
 
 const routes: { path: string; priority: number }[] = [
   { path: "", priority: 1 },
@@ -16,5 +16,9 @@ const routes: { path: string; priority: number }[] = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes.map((r) => ({ url: `${site.url}${r.path}`, changeFrequency: "monthly", priority: r.priority }));
+  return routes.map((r) => ({
+    url: `${site.url}${canonicalPath(r.path || "/")}`,
+    changeFrequency: "monthly",
+    priority: r.priority,
+  }));
 }
