@@ -54,7 +54,7 @@ All copy lives in typed files in `src/content/`. You can change them without tou
 | `pricing.ts` | Plans, prices and comparison rows |
 | `faq.ts` | FAQ questions and answers (also used for JSON-LD) |
 | `quotation-formats.ts` | The six formats, filters and optional real preview images |
-| `social-proof.ts` | Stats counters and testimonials |
+| `social-proof.ts` | Stats counters |
 | `about.ts` | Story, timeline and principles |
 | `legal/*.mdx` | Legal pages (Markdown) |
 
@@ -67,7 +67,7 @@ The live mini-estimator's maths is in `src/lib/demo-estimator.ts`. These are sim
 **Sample data.** Search for `isSample` or `SAMPLE — replace before launch`:
 
 - `src/content/site.ts`: legal name, address, phone/WhatsApp, emails, GSTIN, socials, offer
-- `src/content/social-proof.ts`: stats and testimonials
+- `src/content/social-proof.ts`: stats
 - `src/content/about.ts`: story and timeline
 
 **Legal pages** are drafts expanded from short summaries. Each page shows a "Draft" notice. Have them reviewed, then delete the notice in `src/components/shared/LegalPage.tsx`.

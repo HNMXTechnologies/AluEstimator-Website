@@ -13,17 +13,33 @@ export type Window3DProps = {
   onReady?: () => void;
 };
 
+// Same 60 × 48 proportions as the SVG elevation, so the hand-off from 2D is seamless.
 const W = 3.2;
-const H = 2.4;
+const H = W / 1.25;
 const FRAME = 0.11; // outer frame face width
 const DEPTH = 0.42; // frame depth (rails live inside)
 const SH_FRAME = 0.085;
 const SH_DEPTH = 0.06;
 
+/**
+ * Camera framing that puts the frame exactly where the SVG drawing sits in the
+ * hero plate: frame height = 75% of the plate height, viewed straight on.
+ */
+const FOV = 30;
+const CAM_Z = H / 0.75 / (2 * Math.tan(((FOV / 2) * Math.PI) / 180));
+
+/** 0 → 1 ease that starts once the 3D view has taken over from the drawing. */
+const INTRO_DELAY = 0.7;
+const INTRO_LENGTH = 2.2;
+function introAmount(t: number) {
+  const x = Math.min(1, Math.max(0, (t - INTRO_DELAY) / INTRO_LENGTH));
+  return x * x * (3 - 2 * x);
+}
+
 function useAluminium() {
   return useMemo(
     () =>
-      new THREE.MeshStandardMaterial({ color: "#dfe5ee", metalness: 0.55, roughness: 0.38, envMapIntensity: 1.6 }),
+      new THREE.MeshStandardMaterial({ color: "#a6b2c2", metalness: 0.45, roughness: 0.42, envMapIntensity: 1 }),
     [],
   );
 }
@@ -41,15 +57,15 @@ function meshTexture() {
   c.width = c.height = 64;
   const g = c.getContext("2d")!;
   g.clearRect(0, 0, 64, 64);
-  g.strokeStyle = "rgba(40,48,62,0.85)";
+  g.strokeStyle = "rgba(40,48,62,0.7)";
   g.lineWidth = 1;
-  for (let i = 0; i <= 64; i += 4) {
+  for (let i = 0; i <= 64; i += 8) {
     g.beginPath(); g.moveTo(i + 0.5, 0); g.lineTo(i + 0.5, 64); g.stroke();
     g.beginPath(); g.moveTo(0, i + 0.5); g.lineTo(64, i + 0.5); g.stroke();
   }
   const t = new THREE.CanvasTexture(c);
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.repeat.set(10, 16);
+  t.repeat.set(6, 9);
   t.anisotropy = 4;
   return t;
 }
@@ -62,6 +78,7 @@ function Shutter({
   kind,
   alu,
   slide = false,
+  handle,
 }: {
   width: number;
   targetX: number;
@@ -69,6 +86,7 @@ function Shutter({
   kind: "glass" | "net";
   alu: THREE.Material;
   slide?: boolean;
+  handle?: "left" | "right";
 }) {
   const ref = useRef<THREE.Group>(null);
   const h = H - FRAME * 2 - 0.02;
@@ -77,20 +95,19 @@ function Shutter({
       return new THREE.MeshStandardMaterial({
         map: meshTexture(),
         transparent: true,
-        opacity: 0.9,
-        color: "#5a6680",
+        opacity: 0.6,
+        color: "#8592a6",
         side: THREE.DoubleSide,
         depthWrite: false,
       });
     }
-    return new THREE.MeshPhysicalMaterial({
-      color: "#a9cdf5",
-      metalness: 0.1,
-      roughness: 0.04,
+    // Tinted like the 2D drawing's glass so the hand-off reads as the same window.
+    // Unlit tint: the same blue as the 2D drawing's glass from every angle,
+    // so the hand-off from the drawing reads as one window.
+    return new THREE.MeshBasicMaterial({
+      color: "#b2cff3",
       transparent: true,
-      opacity: 0.32,
-      reflectivity: 0.9,
-      clearcoat: 1,
+      opacity: 0.85,
       side: THREE.DoubleSide,
       depthWrite: false,
     });
@@ -100,19 +117,24 @@ function Shutter({
     const g = ref.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    // gently slide one shutter open and closed to show it is a sliding window
-    const offset = slide ? (Math.sin(t * 0.6) * 0.5 + 0.5) * width * 0.42 : 0;
-    const goal = targetX - offset;
-    g.position.x = THREE.MathUtils.damp(g.position.x, goal, 6, dt);
-    g.scale.y = THREE.MathUtils.damp(g.scale.y, 1, 8, dt);
+    // After the intro, gently slide one shutter open and closed (starts closed, like the drawing).
+    const k = introAmount(t);
+    const offset = slide ? ((1 - Math.cos(Math.max(0, t - INTRO_DELAY) * 0.6)) / 2) * width * 0.42 * k : 0;
+    g.position.x = THREE.MathUtils.damp(g.position.x, targetX - offset, 6, dt);
   });
 
   return (
-    <group ref={ref} position={[targetX, 0, z]} scale={[1, 0.001, 1]}>
+    <group ref={ref} position={[targetX, 0, z]}>
       <Bar args={[width, SH_FRAME, SH_DEPTH]} position={[0, h / 2 - SH_FRAME / 2, 0]} material={alu} />
       <Bar args={[width, SH_FRAME, SH_DEPTH]} position={[0, -h / 2 + SH_FRAME / 2, 0]} material={alu} />
       <Bar args={[SH_FRAME, h, SH_DEPTH]} position={[-width / 2 + SH_FRAME / 2, 0, 0]} material={alu} />
       <Bar args={[SH_FRAME, h, SH_DEPTH]} position={[width / 2 - SH_FRAME / 2, 0, 0]} material={alu} />
+      {handle && (
+        <mesh position={[(handle === "left" ? -1 : 1) * (width / 2 - SH_FRAME / 2), 0, SH_DEPTH / 2 + 0.02]}>
+          <boxGeometry args={[0.035, 0.32, 0.04]} />
+          <meshStandardMaterial color="#2b3340" metalness={0.3} roughness={0.5} />
+        </mesh>
+      )}
       <mesh material={pane} renderOrder={2}>
         <planeGeometry args={[width - SH_FRAME * 2, h - SH_FRAME * 2]} />
       </mesh>
@@ -120,9 +142,10 @@ function Shutter({
   );
 }
 
-function WindowModel({ shutters, net }: { shutters: 2 | 3; net: boolean }) {
+function WindowModel({ shutters, net, onReady }: { shutters: 2 | 3; net: boolean; onReady?: () => void }) {
   const alu = useAluminium();
   const group = useRef<THREE.Group>(null);
+  const frames = useRef(0);
   const tracks = shutters + (net ? 1 : 0);
   const innerW = W - FRAME * 2;
   const overlap = 0.08;
@@ -131,14 +154,19 @@ function WindowModel({ shutters, net }: { shutters: 2 | 3; net: boolean }) {
 
   useFrame((state) => {
     if (!group.current) return;
-    // slow idle sway; OrbitControls handles user rotation on top
-    group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.25) * 0.35;
+    // Tell the page once real frames are on screen, so the crossfade never shows a blank canvas.
+    if (frames.current < 3 && ++frames.current === 3) onReady?.();
+    // Front-on at first (matching the 2D drawing), then ease into a slow sway and slight tilt.
+    const t = state.clock.elapsedTime;
+    const k = introAmount(t);
+    group.current.rotation.y = Math.sin(Math.max(0, t - INTRO_DELAY) * 0.25 + 0.9) * 0.38 * k;
+    group.current.rotation.x = 0.06 * k;
   });
 
   const zFor = (track: number) => -DEPTH / 2 + 0.06 + track * railGap;
 
   return (
-    <group ref={group}>
+    <group ref={group} position={[0, 0, -DEPTH / 2]}>
       {/* outer frame */}
       <Bar args={[W, FRAME, DEPTH]} position={[0, H / 2 - FRAME / 2, 0]} material={alu} />
       <Bar args={[W, FRAME, DEPTH]} position={[0, -H / 2 + FRAME / 2, 0]} material={alu} />
@@ -161,6 +189,7 @@ function WindowModel({ shutters, net }: { shutters: 2 | 3; net: boolean }) {
             kind="glass"
             alu={alu}
             slide={i === shutters - 1}
+            handle={i === 0 ? "left" : i === shutters - 1 ? "right" : undefined}
           />
         );
       })}
@@ -182,19 +211,18 @@ export default function Window3D({ shutters, net, onReady, interactive = true }:
   return (
     <Canvas
       dpr={[1, 1.75]}
-      camera={{ position: [0, 0.3, 5.4], fov: 38 }}
+      camera={{ position: [0, 0, CAM_Z], fov: FOV }}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
-      onCreated={() => onReady?.()}
       shadows={false}
       aria-hidden="true"
       style={interactive ? { cursor: "grab" } : { touchAction: "pan-y", pointerEvents: "none" }}
     >
-      <ambientLight intensity={1.1} />
+      <ambientLight intensity={0.9} />
       <hemisphereLight args={["#ffffff", "#b8c4d6", 0.9]} />
       <directionalLight position={[3, 4, 5]} intensity={1.6} />
       <directionalLight position={[-4, 2, 3]} intensity={0.7} />
-      <WindowModel shutters={shutters} net={net} />
-      <ContactShadows position={[0, -H / 2 - 0.25, 0]} opacity={0.35} scale={7} blur={2.6} far={2} />
+      <WindowModel shutters={shutters} net={net} onReady={onReady} />
+      <ContactShadows position={[0, -H / 2 - 0.12, -DEPTH / 2]} opacity={0.35} scale={7} blur={2.6} far={2} />
       {/* Lightformers keep reflections self-contained (no HDR download). */}
       <Environment resolution={128}>
         <Lightformer intensity={3} position={[0, 4, 3]} scale={[10, 3, 1]} />

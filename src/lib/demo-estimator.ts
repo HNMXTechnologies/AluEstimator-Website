@@ -5,7 +5,8 @@
  */
 
 export type Unit = "mm" | "in" | "ft" | "dora";
-export type WindowType = "2-track" | "3-track";
+/** Glass shutters = tracks; a mosquito-net shutter can be added on its own track. */
+export type WindowConfig = { tracks: 2 | 3; net: boolean };
 
 export const UNITS: { id: Unit; label: string }[] = [
   { id: "mm", label: "mm" },
@@ -19,7 +20,7 @@ export const SAW_KERF_IN = 0.125;
 export const MIN_IN = 12;
 export const MAX_IN = 140; // a single cut must fit on one 12 ft pipe
 
-export const DEFAULTS = { widthIn: 60, heightIn: 48, type: "2-track" as WindowType };
+export const DEFAULTS = { widthIn: 60, heightIn: 48, config: { tracks: 2, net: false } as WindowConfig };
 
 export type PartKind = "frame" | "shutter" | "net" | "glass";
 
@@ -34,21 +35,31 @@ export type Part = {
   size?: { w: number; h: number };
 };
 
-export function buildParts(w: number, h: number, type: WindowType): Part[] {
+/**
+ * Brief §8.7 formulas, generalised to n glass shutters:
+ * shutter top/bottom W/n + 1, sides H − 2, glass (W/n − 2) × (H − 5).
+ * The net shutter covers one shutter width. With n = 2 + net this is exactly
+ * the brief's "3 Track" (two glass shutters plus a net shutter).
+ */
+export function buildParts(w: number, h: number, { tracks: n, net }: WindowConfig): Part[] {
   const parts: Part[] = [
     { id: "frame-tb", name: "Outer frame — top & bottom", kind: "frame", qty: 2, length: w },
     { id: "frame-s", name: "Outer frame — sides", kind: "frame", qty: 2, length: h },
-    { id: "sh-tb", name: "Shutter — top & bottom", kind: "shutter", qty: 4, length: w / 2 + 1 },
-    { id: "sh-s", name: "Shutter — sides (interlock / handle)", kind: "shutter", qty: 4, length: h - 2 },
+    { id: "sh-tb", name: "Shutter — top & bottom", kind: "shutter", qty: 2 * n, length: w / n + 1 },
+    { id: "sh-s", name: "Shutter — sides (interlock / handle)", kind: "shutter", qty: 2 * n, length: h - 2 },
   ];
-  if (type === "3-track") {
+  if (net) {
     parts.push(
-      { id: "net-tb", name: "Net shutter — top & bottom", kind: "net", qty: 2, length: w / 2 + 1 },
+      { id: "net-tb", name: "Net shutter — top & bottom", kind: "net", qty: 2, length: w / n + 1 },
       { id: "net-s", name: "Net shutter — sides", kind: "net", qty: 2, length: h - 2 },
     );
   }
-  parts.push({ id: "glass", name: "Glass", kind: "glass", qty: 2, size: { w: w / 2 - 2, h: h - 5 } });
+  parts.push({ id: "glass", name: "Glass", kind: "glass", qty: n, size: { w: w / n - 2, h: h - 5 } });
   return parts;
+}
+
+export function configLabel({ tracks, net }: WindowConfig) {
+  return `${tracks} Track${net ? " + net" : ""}`;
 }
 
 export type Cut = { key: string; partId: string; kind: PartKind; length: number };

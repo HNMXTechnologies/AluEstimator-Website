@@ -123,14 +123,14 @@ export function HeroVisual() {
           {/* SVG elevation: always rendered first (fast LCP, no-JS and low-end fallback) */}
           <div
             className={cn(
-              "absolute inset-0 flex items-center justify-center p-[9%] transition-opacity duration-700",
+              "absolute inset-0 flex items-center justify-center p-[9%] transition-opacity duration-500 ease-out",
               ready3D ? "opacity-0" : "opacity-100",
             )}
           >
             <WindowElevation width={60} height={48} shutters={shutters} net={net} idPrefix="hero" title="Aluminium sliding window, front elevation" />
           </div>
           {enable3D && (
-            <div className={cn("absolute inset-0 transition-opacity duration-700", ready3D ? "opacity-100" : "opacity-0")}>
+            <div className={cn("absolute inset-0 transition-opacity duration-500 ease-out", ready3D ? "opacity-100" : "opacity-0")}>
               <Window3D shutters={shutters} net={net} interactive={!coarse} onReady={() => setReady3D(true)} />
             </div>
           )}

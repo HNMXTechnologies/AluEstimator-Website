@@ -132,35 +132,29 @@ export function WindowElevation({
         </g>
       ))}
 
-      {/* Mosquito net shutter (in front, right side) */}
-      {net && (
-        <g>
-          <rect
-            x={innerX + innerW - shW}
-            y={innerY - 1}
-            width={shW}
-            height={innerH + 2}
-            fill={`url(#${p}alu-v)`}
-            stroke="#5d6b80"
-            strokeWidth=".8"
-          />
-          <rect
-            x={innerX + innerW - shW + sf}
-            y={innerY + sf - 1}
-            width={shW - sf * 2}
-            height={innerH - sf * 2 + 2}
-            fill="#44516a"
-            fillOpacity=".25"
-          />
-          <rect
-            x={innerX + innerW - shW + sf}
-            y={innerY + sf - 1}
-            width={shW - sf * 2}
-            height={innerH - sf * 2 + 2}
-            fill={`url(#${p}mesh)`}
-          />
-        </g>
-      )}
+      {/* Mosquito net shutter: on its own track in front of the last glass shutter.
+          Only its thin frame is solid, so the glass behind shows through the mesh
+          and every glass shutter stays visible. */}
+      {net && (() => {
+        const nx = innerX + innerW - shW;
+        const ny = innerY - 1;
+        const nh = innerH + 2;
+        const nf = sf * 0.8;
+        return (
+          <g>
+            <path
+              fillRule="evenodd"
+              d={`M${nx} ${ny}h${shW}v${nh}h${-shW}Z M${nx + nf} ${ny + nf}v${nh - nf * 2}h${shW - nf * 2}v${-(nh - nf * 2)}Z`}
+              fill="#7b8899"
+              stroke="#4e5b6e"
+              strokeWidth=".7"
+            />
+            <rect x={nx + nf} y={ny + nf} width={shW - nf * 2} height={nh - nf * 2} fill="#3a4658" fillOpacity=".08" />
+            <rect x={nx + nf} y={ny + nf} width={shW - nf * 2} height={nh - nf * 2} fill={`url(#${p}mesh)`} opacity=".75" />
+            <rect x={nx + 1.2} y={ny + nh / 2 - Math.min(10, nh * 0.06)} width={Math.max(1.6, nf - 2.4)} height={Math.min(20, nh * 0.12)} rx="1" fill="#2b3340" />
+          </g>
+        );
+      })()}
 
       {/* Dimension lines */}
       {widthLabel && (

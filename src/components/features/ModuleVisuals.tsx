@@ -38,7 +38,7 @@ function Frame({ title, children, className }: { title: string; children: React.
 /* Estimator: template library */
 const templates = [
   { series: "27mm", name: "2 Track", shutters: 2 as const, net: false, done: 100, used: 148 },
-  { series: "27mm", name: "3 Track + Net", shutters: 2 as const, net: true, done: 100, used: 96 },
+  { series: "27mm", name: "3 Track + Net", shutters: 3 as const, net: true, done: 100, used: 96 },
   { series: "Domal", name: "3 Shutter", shutters: 3 as const, net: false, done: 92, used: 41 },
   { series: "Mini Domal", name: "2 Track + Net", shutters: 2 as const, net: true, done: 75, used: 12 },
 ];

@@ -9,7 +9,6 @@ import { HowItWorks } from "@/components/home/HowItWorks";
 import { FeatureRows } from "@/components/home/FeatureRows";
 import { Pipeline } from "@/components/home/Pipeline";
 import { Devices, InstallBadge } from "@/components/home/Devices";
-import { Testimonials } from "@/components/home/Testimonials";
 import { PricingCards } from "@/components/pricing/PricingCards";
 import { CtaBand } from "@/components/shared/CtaBand";
 import { FaqAccordion } from "@/components/ui/Accordion";
@@ -195,11 +194,6 @@ export default function Home() {
         </p>
       </Section>
 
-      {/* Testimonials */}
-      <Section labelledBy="t-title" className="border-t border-line bg-surface-2/60">
-        <SectionHeader id="t-title" eyebrow="Customers" title="Fabricators who stopped quoting by hand." align="center" className="mb-12" />
-        <Testimonials />
-      </Section>
 
       {/* FAQ preview */}
       <Section labelledBy="faq-title">

@@ -16,7 +16,8 @@ import {
   planCuts,
   sqft,
   type Unit,
-  type WindowType,
+  configLabel,
+  type WindowConfig,
 } from "@/lib/demo-estimator";
 import { cn } from "@/lib/utils";
 
@@ -108,7 +109,7 @@ function LengthField({
 
 export function MiniEstimator() {
   const [unit, setUnit] = useState<Unit>("in");
-  const [type, setType] = useState<WindowType>(DEFAULTS.type);
+  const [config, setConfig] = useState<WindowConfig>(DEFAULTS.config);
   const [w, setW] = useState(DEFAULTS.widthIn);
   const [h, setH] = useState(DEFAULTS.heightIn);
   const [wText, setWText] = useState(formatInput(DEFAULTS.widthIn, "in"));
@@ -136,7 +137,7 @@ export function MiniEstimator() {
   }
 
   function reset() {
-    setType(DEFAULTS.type);
+    setConfig(DEFAULTS.config);
     setW(DEFAULTS.widthIn);
     setH(DEFAULTS.heightIn);
     setWText(formatInput(DEFAULTS.widthIn, unit));
@@ -145,10 +146,10 @@ export function MiniEstimator() {
     setHErr(undefined);
   }
 
-  const parts = useMemo(() => buildParts(w, h, type), [w, h, type]);
+  const parts = useMemo(() => buildParts(w, h, config), [w, h, config]);
   const plan = useMemo(() => planCuts(parts), [parts]);
   const glass = parts.find((p) => p.kind === "glass")!;
-  const kinds = type === "3-track" ? (["frame", "shutter", "net"] as const) : (["frame", "shutter"] as const);
+  const kinds = config.net ? (["frame", "shutter", "net"] as const) : (["frame", "shutter"] as const);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-lift">
@@ -174,15 +175,28 @@ export function MiniEstimator() {
       <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         {/* Inputs + drawing */}
         <div className="grid content-start gap-5 border-b border-line p-5 sm:p-6 lg:border-r lg:border-b-0">
-          <Segmented
-            label="Window type"
-            value={type}
-            onChange={setType}
-            options={[
-              { id: "2-track", label: "2 Track" },
-              { id: "3-track", label: "3 Track + net" },
-            ]}
-          />
+          <div className="grid grid-cols-[1fr_auto] items-end gap-3">
+            <Segmented
+              label="Window type"
+              value={String(config.tracks) as "2" | "3"}
+              onChange={(v) => setConfig((c) => ({ ...c, tracks: v === "3" ? 3 : 2 }))}
+              options={[
+                { id: "2", label: "2 Track" },
+                { id: "3", label: "3 Track" },
+              ]}
+            />
+            <button
+              type="button"
+              aria-pressed={config.net}
+              onClick={() => setConfig((c) => ({ ...c, net: !c.net }))}
+              className={cn(
+                "min-h-12 rounded-lg border px-3 text-sm font-medium whitespace-nowrap transition-colors",
+                config.net ? "border-brand bg-accent-soft text-brand dark:border-accent dark:text-accent" : "border-line bg-surface-2 text-muted hover:text-ink",
+              )}
+            >
+              + Mosquito net
+            </button>
+          </div>
           <Segmented label="Unit" value={unit} onChange={changeUnit} options={UNITS} />
           <div className="grid grid-cols-2 gap-3">
             <LengthField label="Width" value={wText} unit={unit} error={wErr} onChange={(t) => update(t, setWText, setW, setWErr)} />
@@ -192,12 +206,12 @@ export function MiniEstimator() {
             <WindowElevation
               width={w}
               height={h}
-              shutters={2}
-              net={type === "3-track"}
+              shutters={config.tracks}
+              net={config.net}
               widthLabel={formatLength(w, unit)}
               heightLabel={formatLength(h, unit)}
               idPrefix="mini"
-              title={`Drawing of a ${type === "3-track" ? "3 track" : "2 track"} window, ${formatLength(w, unit)} by ${formatLength(h, unit)}`}
+              title={`Drawing of a ${configLabel(config)} window, ${formatLength(w, unit)} by ${formatLength(h, unit)}`}
             />
           </div>
           <p className="text-xs text-muted">

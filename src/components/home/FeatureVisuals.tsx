@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { AlertTriangle, CheckCircle2, PackageCheck, Truck, Undo2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -167,81 +167,7 @@ export function FormatFan() {
 
 /* ---------------- Partition configurator ---------------- */
 
-export function PartitionVisual() {
-  const { ref, phase } = usePhase(6, 900, 3);
-  const X = 30, Y = 24, W = 340, H = 200;
-  const bays = [X + W / 3, X + (2 * W) / 3];
-  const transomY = Y + H * 0.32;
-  const draw = (on: boolean) => ({
-    initial: false as const,
-    animate: { pathLength: on ? 1 : 0, opacity: on ? 1 : 0 },
-    transition: { duration: 0.7, ease: [0.65, 0, 0.35, 1] as const },
-  });
-
-  return (
-    <div ref={ref} className="overflow-hidden rounded-2xl border border-line bg-surface shadow-lift">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2 px-4 py-2 text-xs text-muted">
-        <span className="font-medium text-ink">Partition · Office cabin</span>
-        <span className="ml-auto hidden gap-1 sm:inline-flex">
-          {["Split bay", "Split pane", "Fit window"].map((t, i) => (
-            <span key={t} className={cn("rounded px-2 py-0.5 transition-colors", phase >= [1, 2, 4][i] ? "bg-accent-soft text-brand dark:text-accent" : "")}>{t}</span>
-          ))}
-        </span>
-      </div>
-      <svg viewBox="0 0 400 260" className="w-full bg-blueprint" role="img" aria-label="A partition split into three bays and panes, with a sliding window fitted into one pane">
-        {/* glass fill */}
-        <rect x={X} y={Y} width={W} height={H} fill="var(--glass)" />
-        <rect x={X} y={Y} width={W} height={H} fill="none" stroke="var(--ink)" strokeWidth="4" />
-        {/* bays */}
-        {bays.map((bx, i) => (
-          <motion.path key={i} d={`M${bx} ${Y}V${Y + H}`} stroke="var(--ink)" strokeWidth="3" fill="none" {...draw(phase >= 1)} />
-        ))}
-        {/* transom split in the middle and right bays */}
-        <motion.path d={`M${bays[0]} ${transomY}H${X + W}`} stroke="var(--ink)" strokeWidth="2.5" fill="none" {...draw(phase >= 2)} />
-        {/* dimensions */}
-        <AnimatePresence>
-          {phase >= 3 && (
-            <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-accent" fill="currentColor" stroke="currentColor">
-              <path d={`M${X} ${Y + H + 14}H${X + W}M${X} ${Y + H + 9}v10M${X + W} ${Y + H + 9}v10`} strokeWidth="1" fill="none" />
-              <text x={X + W / 2} y={Y + H + 30} textAnchor="middle" fontSize="11" stroke="none" className="font-mono">3048 mm</text>
-              <path d={`M${X - 14} ${Y}V${Y + H}M${X - 19} ${Y}h10M${X - 19} ${Y + H}h10`} strokeWidth="1" fill="none" />
-              <text transform={`translate(${X - 20} ${Y + H / 2}) rotate(-90)`} textAnchor="middle" fontSize="11" stroke="none" className="font-mono">2134</text>
-              {[0, 1, 2].map((i) => (
-                <text key={i} x={X + W / 6 + (i * W) / 3} y={Y + 14} textAnchor="middle" fontSize="9.5" stroke="none" className="font-mono">1016</text>
-              ))}
-            </motion.g>
-          )}
-        </AnimatePresence>
-        {/* window drops into the middle lower pane */}
-        <AnimatePresence>
-          {phase >= 4 && (
-            <motion.g
-              initial={{ y: -120, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ type: "spring", stiffness: 160, damping: 14 }}
-            >
-              <rect x={bays[0] + 14} y={transomY + 26} width={W / 3 - 28} height={H * 0.5} fill="#dfe6ef" stroke="#5d6b80" strokeWidth="1.5" />
-              <rect x={bays[0] + 19} y={transomY + 31} width={(W / 3 - 38) / 2} height={H * 0.5 - 10} fill="#cfe0f5" stroke="#5d6b80" />
-              <rect x={bays[0] + 19 + (W / 3 - 38) / 2} y={transomY + 31} width={(W / 3 - 38) / 2} height={H * 0.5 - 10} fill="#cfe0f5" stroke="#5d6b80" />
-            </motion.g>
-          )}
-        </AnimatePresence>
-        {/* fan in right top pane */}
-        <AnimatePresence>
-          {phase >= 5 && (
-            <motion.g initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }} style={{ transformOrigin: `${bays[1] + W / 6}px ${Y + (transomY - Y) / 2}px` }}>
-              <circle cx={bays[1] + W / 6} cy={Y + (transomY - Y) / 2} r="22" fill="var(--surface)" stroke="#5d6b80" strokeWidth="1.5" />
-              {[0, 120, 240].map((a) => (
-                <ellipse key={a} cx={bays[1] + W / 6} cy={Y + (transomY - Y) / 2 - 10} rx="5" ry="10" fill="#94a3b8" transform={`rotate(${a} ${bays[1] + W / 6} ${Y + (transomY - Y) / 2})`} />
-              ))}
-            </motion.g>
-          )}
-        </AnimatePresence>
-      </svg>
-    </div>
-  );
-}
+export { PartitionCanvas as PartitionVisual } from "@/components/visuals/PartitionCanvas";
 
 /* ---------------- Coating workflow ---------------- */
 
