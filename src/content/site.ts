@@ -6,11 +6,13 @@ export const site = {
   name: "AluEstimator",
   tagline: "Smart estimates for aluminium works",
   legalName: "AluEstimator Technologies Pvt. Ltd.",
-  // Canonical host. The site is served from the HNMX domain at
-  // /aluestimator/, so canonicals, Open Graph URLs and the sitemap all point
-  // there rather than at a second domain competing for the same pages.
+  // Canonical host. The main copy of this site is
+  // www.hnmxtechnologies.com/aluestimator/, so canonicals, Open Graph URLs and
+  // the sitemap point there, even from this standalone deployment, rather than
+  // at a second address competing for the same pages.
   url: "https://www.hnmxtechnologies.com",
-  // Must match `basePath` in next.config.ts and the HNMX rewrite.
+  // Path of the main copy on that host. Only used to build those URLs: this
+  // deployment itself has no basePath (see next.config.ts).
   basePath: "/aluestimator",
   appUrl: "https://app.aluestimator.in",
   address: {
@@ -47,12 +49,8 @@ export const site = {
 } as const;
 
 /**
- * Absolute path for a route, including the base path.
- *
- * Next prefixes next/link hrefs and asset URLs with basePath automatically,
- * but NOT metadata: `alternates.canonical` is resolved against metadataBase
- * alone. Without this, every canonical would claim the page lives at the
- * domain root.
+ * Path of a route on the main copy (www.hnmxtechnologies.com/aluestimator/),
+ * for canonical URLs. Resolved against metadataBase (site.url).
  */
 export const canonicalPath = (path: string) =>
   path === "/" || path === ""
