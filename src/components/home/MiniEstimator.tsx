@@ -203,7 +203,8 @@ export function MiniEstimator() {
             <LengthField label="Width" value={wText} unit={unit} error={wErr} onChange={(t) => update(t, setWText, setW, setWErr)} />
             <LengthField label="Height" value={hText} unit={unit} error={hErr} onChange={(t) => update(t, setHText, setH, setHErr)} />
           </div>
-          <div className="mx-auto w-full max-w-md rounded-xl border border-line bg-blueprint p-3 lg:max-w-none">
+          {/* Fixed-height stage: the drawing scales to fit, so very tall or wide sizes never stretch the page. */}
+          <div className="mx-auto flex h-[260px] w-full max-w-md items-center justify-center rounded-xl border border-line bg-blueprint p-3 sm:h-[300px] lg:max-w-none">
             <WindowElevation
               width={w}
               height={h}
@@ -213,6 +214,7 @@ export function MiniEstimator() {
               heightLabel={formatLength(h, unit)}
               idPrefix="mini"
               title={`Drawing of a ${configLabel(config)} window, ${formatLength(w, unit)} by ${formatLength(h, unit)}`}
+              className="h-full w-full"
             />
           </div>
           <p className="text-xs text-muted">
