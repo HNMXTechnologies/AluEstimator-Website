@@ -63,9 +63,6 @@ export default function ContactPage() {
                 <li className="flex gap-3"><Clock className="mt-0.5 size-4.5 shrink-0 text-muted" aria-hidden="true" />{site.supportHours}</li>
                 <li className="flex gap-3"><MapPin className="mt-0.5 size-4.5 shrink-0 text-muted" aria-hidden="true" />{site.address.line1}, {site.address.line2}</li>
               </ul>
-              <p className="mt-4 border-t border-line pt-4 text-sm text-muted">
-                Already a customer? <a href={site.appUrl} className="font-medium text-brand underline-offset-2 hover:underline dark:text-accent">Log in to the app</a>
-              </p>
             </div>
           </aside>
         </div>

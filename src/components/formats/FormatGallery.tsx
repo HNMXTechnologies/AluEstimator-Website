@@ -8,16 +8,17 @@ import Image from "next/image";
 import { useState } from "react";
 import { QuotePreview } from "@/components/visuals/QuotePreview";
 import { formatFilters, quotationFormats, type FormatTag, type QuotationFormat } from "@/content/quotation-formats";
+import { asset } from "@/lib/asset";
 import { cn } from "@/lib/utils";
 
 function Preview({ f, className, sizes }: { f: QuotationFormat; className?: string; sizes: string }) {
   if (f.image) {
     return (
       <Image
-        src={f.image}
+        src={asset(f.image)}
         alt={`${f.name} quotation format`}
-        width={f.orientation === "landscape" ? 1188 : 840}
-        height={f.orientation === "landscape" ? 840 : 1188}
+        width={f.orientation === "landscape" ? 560 : 396}
+        height={f.orientation === "landscape" ? 396 : 560}
         sizes={sizes}
         className={cn("h-auto w-full rounded-[3px] shadow-lift", className)}
       />
@@ -140,7 +141,7 @@ export function FormatGallery() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={reduce ? undefined : { opacity: 0 }}
                       transition={{ duration: 0.25 }}
-                      className={cn("max-h-full", current.orientation === "landscape" ? "w-full max-w-4xl" : "h-full max-w-full")}
+                      className={cn("max-h-full", current.orientation === "landscape" ? "w-full max-w-[720px]" : "h-full max-h-[720px] max-w-full")}
                       style={current.orientation === "landscape" ? undefined : { aspectRatio: "210 / 297" }}
                     >
                       <Preview f={current} sizes="90vw" className="max-h-full" />

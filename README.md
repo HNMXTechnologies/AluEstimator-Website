@@ -74,17 +74,13 @@ The live mini-estimator's maths is in `src/lib/demo-estimator.ts`. These are sim
 
 **Illustrative figures.** Some example amounts and sizes in the visuals are made up: the engine tables, notebook scene, mock screens, customiser and ledger. They're labelled as illustrative where shown.
 
-## Replacing assets
+## Images
 
-- **Logo.** `src/components/brand/Logo.tsx` is a recreated text logo, and `src/app/icon.svg` is the favicon. Copy `logo.svg`, `logo-dark.svg` and `mark.svg` into `public/brand/`, then swap the component to use `next/image`.
-- **Quotation previews.** Copy the six `.webp` files into `public/quotation-formats/` and set `image: "/quotation-formats/classic-gst.webp"` (and so on) on each entry in `src/content/quotation-formats.ts`. The gallery switches to the real images automatically.
-- **App screenshots.** The placeholder screens are drawn in HTML/SVG:
-  - `src/components/home/Devices.tsx` (Home)
-  - `src/components/how/StepScreens.tsx` (How it works)
-  - `src/components/features/ModuleVisuals.tsx` (Features)
-
-  Put screenshots in `public/screens/` and replace the screen components with `next/image`.
-- **Demo video.** None yet (brief §11.7).
+- **Logo & favicon** come from the app repo's `frontend/public/brand/` (copied to `public/brand/`; `src/app/icon.svg` is `favicon.svg`).
+- **Quotation format previews** are the app's own `frontend/public/quotation-formats/*.webp` (copied to `public/quotation-formats/`).
+- **Screenshots** in `public/screens/` were captured from the app running locally with the seeded demo workspace (desktop at 2× and phone at 3×, converted to WebP). They're listed in `src/components/shared/ScreenPair.tsx` (`shots`). To refresh them, run the app locally, capture the same screens, and overwrite the files with the same names and sizes.
+- `public/` paths go through `asset()` (`src/lib/asset.ts`), which adds the build's base path from `NEXT_PUBLIC_BASE_PATH` in `next.config.ts` (empty here; set it to `/aluestimator` in the HNMX copy). `next/image` doesn't add it automatically.
+- Still drawn by hand: the How-it-works step screens and the Billing/CRM and Team visuals on /features (the demo data had nothing to show there yet).
 
 ## Notes
 

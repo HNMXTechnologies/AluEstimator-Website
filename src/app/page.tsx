@@ -150,7 +150,7 @@ export default function Home() {
         <Reveal delay={0.15} className="mt-14 pb-12">
           <Devices />
         </Reveal>
-        <p className="mt-4 text-center text-xs text-muted">Illustrative screens.</p>
+        <p className="mt-4 text-center text-xs text-muted">Real screens from the AluEstimator app, shown with demo data.</p>
       </Section>
 
       {/* Built for India */}

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="AluEstimator">
+  <title>AluEstimator</title>
+  <defs>
+    <linearGradient id="aed-blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#D5DCE6"/>
+    </linearGradient>
+    <linearGradient id="aed-alu" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C9D0D8"/>
+      <stop offset="0.45" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#AEB7C2"/>
+    </linearGradient>
+    <linearGradient id="aed-alu-side" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7D8794"/>
+      <stop offset="1" stop-color="#A9B2BD"/>
+    </linearGradient>
+    <linearGradient id="aed-glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2B4170"/>
+      <stop offset="1" stop-color="#14254A"/>
+    </linearGradient>
+    <linearGradient id="aed-swoosh" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.1"/>
+      <stop offset="0.4" stop-color="#FFFFFF"/>
+      <stop offset="0.7" stop-color="#DCE3EC"/>
+      <stop offset="1" stop-color="#DCE3EC" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(8 1)">
+  <!-- Back sash: blue frame, opening away (narrower on the right) -->
+  <path fill="url(#aed-blue)" fill-rule="evenodd"
+        d="M14 27 L52 21 L52 101 L14 101 Z
+           M20 33.2 L46 29.4 L46 95.5 L20 95.5 Z"/>
+  <path fill="url(#aed-glass)" d="M20 33.2 L46 29.4 L46 95.5 L20 95.5 Z"/>
+  <path fill="url(#aed-blue)" d="M30.5 33.2 L34.5 32.6 L34.5 94 L30.5 94 Z"/>
+
+  <!-- Front sash: aluminium frame with a visible depth face -->
+  <path fill="url(#aed-alu-side)" d="M41 20 L50 13 L50 103 L41 101 Z"/>
+  <path fill="url(#aed-alu)" fill-rule="evenodd"
+        d="M50 13 L94 9 L94 101 L50 103 Z
+           M56 19 L88 16.3 L88 95.6 L56 97 Z"/>
+  <path fill="url(#aed-glass)" d="M56 19 L88 16.3 L88 95.6 L56 97 Z"/>
+  <path fill="#C9D0D8" d="M66.5 19.7 L69.5 19.5 L69.5 94.9 L66.5 95 Z"/>
+  <path fill="#C9D0D8" d="M75 19 L78 18.7 L78 94.4 L75 94.6 Z"/>
+
+  </g>
+
+  <!-- Base swoosh -->
+  <path fill="url(#aed-swoosh)"
+        d="M5 113 C 36 97.5, 88 96.5, 124 104.5 C 90 100.5, 38 103, 5 113 Z"/>
+</svg>

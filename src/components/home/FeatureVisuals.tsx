@@ -4,7 +4,9 @@ import { motion, useInView } from "motion/react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { AlertTriangle, CheckCircle2, PackageCheck, Truck, Undo2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { QuotePreview } from "@/components/visuals/QuotePreview";
+import { asset } from "@/lib/asset";
 import { quotationFormats } from "@/content/quotation-formats";
 import { cn } from "@/lib/utils";
 
@@ -150,7 +152,18 @@ export function FormatFan() {
               transition={{ type: "spring", stiffness: 120, damping: 18 }}
             >
               <div className={cn("flex aspect-[210/297] items-center bg-transparent", f.orientation === "landscape" && "px-0")}>
-                <QuotePreview id={f.id} name={f.name} landscape={f.orientation === "landscape"} />
+                {f.image ? (
+                  <Image
+                    src={asset(f.image)}
+                    alt={`${f.name} quotation format`}
+                    width={f.orientation === "landscape" ? 560 : 396}
+                    height={f.orientation === "landscape" ? 396 : 560}
+                    sizes="200px"
+                    className="h-auto w-full rounded-[3px] bg-white shadow-[0_1px_2px_rgba(0,0,0,.08),0_10px_30px_-10px_rgba(11,23,40,.35)]"
+                  />
+                ) : (
+                  <QuotePreview id={f.id} name={f.name} landscape={f.orientation === "landscape"} />
+                )}
               </div>
             </motion.div>
           );

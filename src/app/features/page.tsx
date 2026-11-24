@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { canonicalPath } from "@/content/site";
 import type { ReactNode } from "react";
 import { Cloud, Laptop, Moon, Search, ShieldCheck, Smartphone, Lock } from "lucide-react";
-import { CheckList, EstimatorVisual, LedgerVisual, StockVisual, TeamVisual } from "@/components/features/ModuleVisuals";
-import { CoatingVisual, FormatFan, PartitionVisual } from "@/components/home/FeatureVisuals";
+import { CheckList, LedgerVisual, TeamVisual } from "@/components/features/ModuleVisuals";
+import { ScreenPair, shots } from "@/components/shared/ScreenPair";
 import { CtaBand } from "@/components/shared/CtaBand";
 import { PageHero } from "@/components/shared/PageHero";
 import { ButtonLink } from "@/components/ui/Button";
@@ -19,15 +19,10 @@ export const metadata: Metadata = {
 };
 
 const visuals: Record<FeatureModule["id"], ReactNode> = {
-  estimator: <EstimatorVisual />,
-  quotations: <FormatFan />,
-  partitions: <PartitionVisual />,
-  inventory: (
-    <div className="grid gap-4">
-      <CoatingVisual />
-      <StockVisual />
-    </div>
-  ),
+  estimator: <ScreenPair desktop={shots.templates} phone={shots.mTemplates} />,
+  quotations: <ScreenPair desktop={shots.quotation} phone={shots.mQuotations} />,
+  partitions: <ScreenPair desktop={shots.partition} phone={shots.mPartition} />,
+  inventory: <ScreenPair desktop={shots.coating} phone={shots.mCoating} />,
   billing: <LedgerVisual />,
   team: <TeamVisual />,
 };

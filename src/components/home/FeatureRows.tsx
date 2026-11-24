@@ -5,7 +5,8 @@ import { Eyebrow } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { featureRows } from "@/content/home";
 import { cn } from "@/lib/utils";
-import { CoatingVisual, EngineVisual, FormatFan, PartitionVisual } from "./FeatureVisuals";
+import { ScreenPair, shots } from "@/components/shared/ScreenPair";
+import { FormatFan, PartitionVisual } from "./FeatureVisuals";
 
 type Row = (typeof featureRows)[keyof typeof featureRows];
 
@@ -38,10 +39,10 @@ function FeatureRow({ row, visual, flip, href, id }: { row: Row; visual: ReactNo
 export function FeatureRows() {
   return (
     <div className="grid gap-24 sm:gap-32">
-      <FeatureRow id="f-engine" row={featureRows.engine} visual={<EngineVisual />} href="/features#estimator" />
+      <FeatureRow id="f-engine" row={featureRows.engine} visual={<ScreenPair desktop={shots.windowGroup} phone={shots.mWindowGroup} />} href="/features#estimator" />
       <FeatureRow id="f-formats" row={featureRows.formats} visual={<FormatFan />} flip href="/quotation-formats" />
       <FeatureRow id="f-partitions" row={featureRows.partitions} visual={<PartitionVisual />} href="/features#partitions" />
-      <FeatureRow id="f-coating" row={featureRows.coating} visual={<CoatingVisual />} flip href="/features#inventory" />
+      <FeatureRow id="f-coating" row={featureRows.coating} visual={<ScreenPair desktop={shots.coating} phone={shots.mCoating} />} flip href="/features#inventory" />
     </div>
   );
 }

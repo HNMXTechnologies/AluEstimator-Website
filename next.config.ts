@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
   // Same URL style as the HNMX site, so canonicals match the URLs there.
   trailingSlash: true,
 
+  // Exposed to the client so asset() can prefix public/ files with the build's
+  // basePath ("" here; "/aluestimator" in the HNMX copy). next/image and <img>
+  // don't add basePath on their own.
+  env: { NEXT_PUBLIC_BASE_PATH: "" },
+
   experimental: {
     serverActions: {
       // A Server Action compares the request Origin against the Host. Behind

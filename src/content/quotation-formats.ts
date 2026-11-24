@@ -25,13 +25,14 @@ export type QuotationFormat = {
   orientation: "portrait" | "landscape";
   tags: FormatTag[];
   bestFor: string;
-  /** Real preview image in /public/quotation-formats when supplied; stylised SVG is drawn until then. */
+  /** Real preview from the app (public/quotation-formats); the stylised SVG is the fallback. */
   image?: string;
 };
 
 export const quotationFormats: QuotationFormat[] = [
   {
     id: "classic-gst",
+    image: "/quotation-formats/classic-gst.webp",
     name: "Classic GST",
     description: "Traditional bordered GST bill in black and white; prints and photocopies cleanly.",
     orientation: "portrait",
@@ -40,6 +41,7 @@ export const quotationFormats: QuotationFormat[] = [
   },
   {
     id: "window-schedule",
+    image: "/quotation-formats/window-schedule.webp",
     name: "Window Schedule",
     description:
       "Branded header band, a large specification card per window and partition, then a commercial summary.",
@@ -49,6 +51,7 @@ export const quotationFormats: QuotationFormat[] = [
   },
   {
     id: "per-sqft",
+    image: "/quotation-formats/per-sqft.webp",
     name: "Per Sq. Ft.",
     description:
       "Compact one-page table priced by area — area, total area and rate per sq ft for every item.",
@@ -58,6 +61,7 @@ export const quotationFormats: QuotationFormat[] = [
   },
   {
     id: "room-gallery",
+    image: "/quotation-formats/room-gallery.webp",
     name: "Room-wise Gallery",
     description: "Windows grouped by floor with subtotals, shown as a gallery of room tiles with drawings.",
     orientation: "portrait",
@@ -66,6 +70,7 @@ export const quotationFormats: QuotationFormat[] = [
   },
   {
     id: "elevation-sheet",
+    image: "/quotation-formats/elevation-sheet.webp",
     name: "Elevation Sheet",
     description:
       "Landscape architect-style drawing sheet: every item drawn to one true scale with callouts, scale bar and title block.",
@@ -75,6 +80,7 @@ export const quotationFormats: QuotationFormat[] = [
   },
   {
     id: "formal-letter",
+    image: "/quotation-formats/formal-letter.webp",
     name: "Formal Letter + Annexures",
     description:
       "A business letter stating scope and price, with drawings and terms as annexures and an order acceptance form.",

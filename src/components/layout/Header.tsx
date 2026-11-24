@@ -61,12 +61,6 @@ export function Header() {
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2">
           <ThemeToggle />
-          <a
-            href={site.appUrl}
-            className="hidden min-h-11 items-center rounded-lg px-3 text-[14.5px] font-medium whitespace-nowrap text-muted hover:text-ink md:inline-flex"
-          >
-            Log in
-          </a>
           <ButtonLink href="/contact" className="hidden sm:inline-flex">
             Book a free demo
           </ButtonLink>
@@ -121,12 +115,6 @@ export function Header() {
                   <ButtonLink href={site.whatsappUrl} variant="whatsapp" size="lg">
                     <WhatsAppIcon /> Chat on WhatsApp
                   </ButtonLink>
-                  <a
-                    href={site.appUrl}
-                    className="mt-1 inline-flex min-h-11 items-center justify-center text-sm font-medium text-muted"
-                  >
-                    Existing customer? Log in
-                  </a>
                 </div>
               </Dialog.Content>
             </Dialog.Portal>
