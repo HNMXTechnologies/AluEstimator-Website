@@ -123,9 +123,10 @@ export function MiniEstimator() {
     setText(text);
     const v = parseLength(text, unit);
     if (v == null) return setErr(unit === "dora" ? "Type inches and fractions, e.g. 48 3/8" : "Enter a number");
-    if (v < MIN_IN || v > MAX_IN) return setErr(`Demo range: ${range}`);
+    // 0.05″ tolerance so a rounded 12 ft in mm (3658) is accepted, then capped at exactly 12 ft.
+    if (v < MIN_IN || v > MAX_IN + 0.05) return setErr(`Demo range: ${range}`);
     setErr(undefined);
-    setVal(v);
+    setVal(Math.min(v, MAX_IN));
   }
 
   function changeUnit(u: Unit) {

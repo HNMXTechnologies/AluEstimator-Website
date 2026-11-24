@@ -18,7 +18,7 @@ export const UNITS: { id: Unit; label: string }[] = [
 export const STOCK_LENGTH_IN = 144; // 12 ft
 export const SAW_KERF_IN = 0.125;
 export const MIN_IN = 12;
-export const MAX_IN = 140; // a single cut must fit on one 12 ft pipe
+export const MAX_IN = STOCK_LENGTH_IN; // up to exactly 12 ft: one cut may use a whole pipe
 
 export const DEFAULTS = { widthIn: 60, heightIn: 48, config: { tracks: 2, net: false } as WindowConfig };
 
@@ -86,14 +86,17 @@ export function planCuts(parts: Part[]): CuttingPlan {
 
   const pipes: Pipe[] = [];
   for (const cut of cuts) {
-    const need = cut.length + SAW_KERF_IN;
-    let pipe = pipes.find((pp) => STOCK_LENGTH_IN - pp.used >= need - 1e-9);
+    // A cut that fills the pipe needs no saw allowance (nothing is cut off after it).
+    const fits = (used: number) =>
+      STOCK_LENGTH_IN - used >= cut.length + SAW_KERF_IN - 1e-9 || Math.abs(STOCK_LENGTH_IN - used - cut.length) < 1e-9;
+    const need = Math.min(cut.length + SAW_KERF_IN, STOCK_LENGTH_IN);
+    let pipe = pipes.find((pp) => fits(pp.used));
     if (!pipe) {
       pipe = { index: pipes.length, cuts: [], used: 0 };
       pipes.push(pipe);
     }
     pipe.cuts.push({ ...cut, offset: pipe.used });
-    pipe.used += need;
+    pipe.used = Math.min(STOCK_LENGTH_IN, pipe.used + need);
   }
 
   const totalCutLength = cuts.reduce((s, c) => s + c.length, 0);
