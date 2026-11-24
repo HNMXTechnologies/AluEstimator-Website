@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const visuals: Record<FeatureModule["id"], ReactNode> = {
-  estimator: <ScreenPair desktop={shots.templates} phone={shots.mTemplates} />,
+  estimator: <ScreenPair desktop={shots.calculation} phone={shots.mCalculation} />,
   quotations: <ScreenPair desktop={shots.quotation} phone={shots.mQuotations} />,
   partitions: <ScreenPair desktop={shots.partition} phone={shots.mPartition} />,
   inventory: <ScreenPair desktop={shots.coating} phone={shots.mCoating} />,

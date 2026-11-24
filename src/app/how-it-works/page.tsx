@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import { Pipeline } from "@/components/home/Pipeline";
-import { BuilderStep, GridStep, PriceStep, SendStep } from "@/components/how/StepScreens";
+import { SendStep } from "@/components/how/StepScreens";
+import { ScreenPair, shots } from "@/components/shared/ScreenPair";
 import { CtaBand } from "@/components/shared/CtaBand";
 import { PageHero } from "@/components/shared/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 
 const details: { points: string[]; screen: ReactNode }[] = [
   {
-    screen: <BuilderStep />,
+    screen: <ScreenPair desktop={shots.templates} phone={shots.mTemplates} />,
     points: [
       "Organise designs as Series → Type → Option",
       "Formulas from width and height, with live values",
@@ -28,7 +29,7 @@ const details: { points: string[]; screen: ReactNode }[] = [
     ],
   },
   {
-    screen: <GridStep />,
+    screen: <ScreenPair desktop={shots.windowGroup} phone={shots.mWindowGroup} />,
     points: [
       "Choose profile, glass, coating and locks once per group",
       "Type sizes row by row, with floor and location",
@@ -37,7 +38,7 @@ const details: { points: string[]; screen: ReactNode }[] = [
     ],
   },
   {
-    screen: <PriceStep />,
+    screen: <ScreenPair desktop={shots.calculation} phone={shots.mCalculation} />,
     points: [
       "Optimised cutting plan on 12, 15 or 16 ft pipes",
       "Weight, glass area, accessories, coating and waste",
@@ -95,7 +96,7 @@ export default function HowItWorksPage() {
               </Reveal>
             </div>
           ))}
-          <p className="-mt-16 text-center text-xs text-muted sm:-mt-24">Screens are illustrative.</p>
+          <p className="-mt-16 text-center text-xs text-muted sm:-mt-24">Real screens from the AluEstimator app with demo data; step 4 is illustrative.</p>
         </div>
       </section>
 
